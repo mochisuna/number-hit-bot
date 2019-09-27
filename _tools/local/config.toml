@@ -1,0 +1,10 @@
+[server]
+  port = ":8080"
+
+[linebot]
+  channel_token  = "***"
+  channel_secret = "***"
+
+[firestore]
+  project_id = ""
+  json_path = "./_tools/local/firebase_auth.json"

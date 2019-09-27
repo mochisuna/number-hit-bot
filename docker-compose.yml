@@ -1,0 +1,12 @@
+version: "3.5"
+
+services:
+  number-hit-bot:
+    build:
+      context: .
+      target: local
+    volumes:
+      - ./:/go/server
+    command: realize start
+    ports:
+      - 18080:8080

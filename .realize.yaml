@@ -1,0 +1,26 @@
+settings:
+  legacy:
+    force: false
+    interval: 0s
+schema:
+  - name: number-hit-bot
+    path: .
+    commands:
+      fmt:
+        status: true
+      install:
+        status: true
+        dir: cmd/bot
+      run:
+        status: true
+        method: /go/bin/bot
+    watcher:
+      extensions:
+        - go
+        - toml
+      paths:
+        - /
+      ignored_paths:
+        - .git
+        - .realize
+        - vendor
