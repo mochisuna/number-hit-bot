@@ -13,6 +13,7 @@ import (
 
 var rendering = render.New(render.Options{})
 
+// Services is all application services
 type Services struct {
 	CallbackService service.CallbackService
 }
@@ -24,6 +25,7 @@ type Server struct {
 	*LineBot
 }
 
+// New server
 func New(addr string, services *Services, line *LineBot) *Server {
 	return &Server{
 		Server: &http.Server{

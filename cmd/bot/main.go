@@ -22,23 +22,28 @@ func main() {
 	if err := config.New(conf, *path); err != nil {
 		panic(err)
 	}
-
+	// init firebase client
 	firestoreClient, err := database.NewFirestore(&conf.Firestore)
 	if err != nil {
 		panic(err)
 	}
 	defer firestoreClient.Close()
-
+	// init repository
 	userRepo := infrastructure.NewUserRepository(firestoreClient)
+	// init service
 	callbackService := application.NewCallbackService(userRepo)
+
 	service := &handler.Services{
 		CallbackService: callbackService,
 	}
 
+	// init line bot
 	bot, err := handler.NewLineBot(&conf.LineBot)
 	if err != nil {
 		panic(err)
 	}
+
+	// 依存関係は全てここでinjection
 	server := handler.New(conf.Server.Port, service, bot)
 	log.Println("Start server")
 	if err := server.ListenAndServe(); err != nil {

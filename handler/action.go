@@ -11,6 +11,7 @@ import (
 )
 
 // botのアクションのみを統括
+// ここがグチャるのは妥協した
 const (
 	ActionEventStart  = "Start"
 	ActionEventCancel = "Cancel"
@@ -29,6 +30,8 @@ func (s *Server) getMessageFollowAction(ctx context.Context, req *linebot.Event)
 	}
 	return linebot.NewTextMessage(profile.DisplayName + "さん、\n登録ありがとう！\n早速だけどゲームスタート！\n僕が考えている数字が何かを当ててね！\n1から100のどれかだよ！")
 }
+
+// バリデーション兼パース
 func getNum(input string) (int, error) {
 	num, err := strconv.Atoi(input)
 	if err != nil {
