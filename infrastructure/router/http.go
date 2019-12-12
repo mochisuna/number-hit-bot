@@ -11,28 +11,23 @@ import (
 	"github.com/unrolled/render"
 )
 
-var rendering = render.New(render.Options{})
-
-// Services is all application services
-type Services struct {
-	CallbackService service.CallbackService
-}
-
 // Server HTTP server
 type Server struct {
-	*http.Server
-	*Services
-	*LineBot
+	server *http.Server
+	controller *adapter.Controller
+	// *Services
+	// *LineBot
 }
 
 // New server
-func New(addr string, services *Services, line *LineBot) *Server {
+func New(addr string, ctrs *adapter.Controller) *Server {
 	return &Server{
-		Server: &http.Server{
+		server: &http.Server{
 			Addr: addr,
 		},
-		Services: services,
-		LineBot:  line,
+		controller: ctrs,
+		// Services: services,
+		// LineBot:  line,
 	}
 }
 
@@ -60,7 +55,7 @@ func (s *Server) ListenAndServe() error {
 	// routings
 	// 開発レベルでバージョン分けする可能性がゼロではないので一応バージョンをラベル切っておく
 	r.Route("/v1", func(r chi.Router) {
-		r.Post("/callback", s.callback)
+		r.Post("/callback", s.controller.Callback)
 	})
 	// health check
 	r.Route("/health", func(r chi.Router) {
@@ -69,6 +64,6 @@ func (s *Server) ListenAndServe() error {
 		})
 	})
 
-	s.Handler = r
-	return s.Server.ListenAndServe()
+	s.server.Handler = r
+	return s.server.ListenAndServe()
 }

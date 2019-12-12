@@ -9,25 +9,27 @@ import (
 	"github.com/mochisuna/number-hit-bot/config"
 	"github.com/mochisuna/number-hit-bot/handler"
 	"github.com/mochisuna/number-hit-bot/infrastructure"
-	"github.com/mochisuna/number-hit-bot/infrastructure/database"
+	"github.com/mochisuna/number-hit-bot/infrastructure/firebase"
 )
 
 func main() {
 	// parse options
-	path := flag.String("c", "_tools/local/config.toml", "config file")
+	env := flag.String("e", "local", "environment")
 	flag.Parse()
 
 	// import config
-	conf := &config.Config{}
-	if err := config.New(conf, *path); err != nil {
-		panic(err)
-	}
-	// init firebase client
-	firestoreClient, err := database.NewFirestore(&conf.Firestore)
+	conf, err := config.New(*env)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("Loading config failed. err: %+v", err))
+	}
+
+	// init firebase client
+	firestoreClient, err := firebase.NewFirestore(&conf.Firestore)
+	if err != nil {
+		panic(fmt.Sprintf("Loading firestore-cilent failed. err: %+v", err))
 	}
 	defer firestoreClient.Close()
+
 	// init repository
 	userRepo := infrastructure.NewUserRepository(firestoreClient)
 	// init service

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+
 	"github.com/BurntSushi/toml"
 )
 
@@ -27,9 +29,10 @@ type LineBot struct {
 	ChannelSecret string `toml:"channel_secret"`
 }
 
-// New Config
-func New(config *Config, configPath string) error {
+// New create config
+func New(env string) (*Config, error) {
+	configPath := fmt.Sprintf("_config/%s/config.toml", env)
+	config := &Config{}
 	_, err := toml.DecodeFile(configPath, config)
-	return err
-
+	return config, err
 }

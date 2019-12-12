@@ -10,8 +10,6 @@ import (
 	"github.com/mochisuna/number-hit-bot/domain"
 )
 
-// botのアクションのみを統括
-// ここがグチャるのは妥協した
 const (
 	ActionEventStart  = "Start"
 	ActionEventCancel = "Cancel"

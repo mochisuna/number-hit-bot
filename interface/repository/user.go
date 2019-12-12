@@ -7,17 +7,31 @@ import (
 
 	"github.com/mochisuna/number-hit-bot/domain"
 	"github.com/mochisuna/number-hit-bot/domain/repository"
-	"github.com/mochisuna/number-hit-bot/infrastructure/database"
+	"github.com/mochisuna/number-hit-bot/infrastructure/firebase"
 )
 
 type userRepository struct {
-	client *database.FirestoreClient
+	client *firebase.FirestoreClient
 }
 
-func NewUserRepository(client *database.FirestoreClient) repository.UserRepository {
+func NewUserRepository(client *firebase.FirestoreClient) repository.UserRepository {
 	return &userRepository{
 		client,
 	}
+}
+func (r *userRepository) GetUser(ctx context.Context, id domain.UserID) (*domain.User, error) {
+	dsnap, err := r.client.Collection("users").Doc(string(id)).Get(ctx)
+	if err != nil {
+		log.Printf("error in GetUser: %v\n", err.Error())
+		return nil, err
+	}
+	log.Printf("%#v\n", dsnap.Data())
+	res := domain.User{}
+
+	if err = dsnap.DataTo(&res); err != nil {
+		log.Printf("error in GetUser: %v\n", err.Error())
+	}
+	return &res, nil
 }
 
 func (r *userRepository) ResetUser(ctx context.Context, id domain.UserID) (*domain.User, error) {
@@ -40,17 +54,3 @@ func (r *userRepository) UpdateUser(ctx context.Context, user *domain.User) erro
 	return err
 }
 
-func (r *userRepository) GetUser(ctx context.Context, id domain.UserID) (*domain.User, error) {
-	dsnap, err := r.client.Collection("users").Doc(string(id)).Get(ctx)
-	if err != nil {
-		log.Printf("error in GetUser: %v\n", err.Error())
-		return nil, err
-	}
-	log.Printf("%#v\n", dsnap.Data())
-	res := domain.User{}
-
-	if err = dsnap.DataTo(&res); err != nil {
-		log.Printf("error in GetUser: %v\n", err.Error())
-	}
-	return &res, nil
-}
