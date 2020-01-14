@@ -8,7 +8,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/go-chi/cors v1.0.0
-	github.com/line/line-bot-sdk-go v6.3.0+incompatible
+	github.com/line/line-bot-sdk-go v6.4.0+incompatible
 	github.com/unrolled/render v1.0.1
 	google.golang.org/api v0.10.0
 )
