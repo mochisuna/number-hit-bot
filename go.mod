@@ -3,7 +3,7 @@ module github.com/mochisuna/number-hit-bot
 go 1.12
 
 require (
-	cloud.google.com/go v0.52.0
+	cloud.google.com/go v0.55.0
 	firebase.google.com/go v3.11.1+incompatible
 	github.com/BurntSushi/toml v0.3.1
 	github.com/go-chi/chi v4.0.3+incompatible
