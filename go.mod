@@ -9,6 +9,6 @@ require (
 	github.com/go-chi/chi v4.0.3+incompatible
 	github.com/go-chi/cors v1.0.0
 	github.com/line/line-bot-sdk-go v6.4.0+incompatible
-	github.com/unrolled/render v1.0.1
+	github.com/unrolled/render v1.0.3
 	google.golang.org/api v0.10.0
 )
